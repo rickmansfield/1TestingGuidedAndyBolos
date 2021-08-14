@@ -1,6 +1,7 @@
 import React from "react";
 import { fireEvent, render, screen } from "@testing-library/react";
 import MissionForm from "./MissionForm";
+import userEvent from '@testing-library/user-event';
 
 test("MissionForm renders correctly without errors", () => {
   render(<MissionForm />);
@@ -21,31 +22,39 @@ test("renders message correctly when isFetchingData is true", () => {
   expect(item).toHaveTextContent(/we are fetching data/i);
   expect(button).not.toBeInTheDocument();
 });
+
+
 // Does the component render correctly when isFetchingData is false?
 test("renders button correctly when isFetchingData is false", () => {
   // Arrange
   render(<MissionForm isFetchingData={false} />);
   // Act
-  const button = screen.queryByRole("button");
+  const item = screen.queryByText(/we are fetching data/i);
+  const button = screen.getByRole("button");
   // Assert
-  expect(button).not.toBeNull();
+  expect(item).not.toBeInTheDocument();
   expect(button).toBeInTheDocument();
+  
 });
+
+
 // When button is clicked, does getData execute?
 test("calls getData when button is clicked", () => {
   const fakeGetData = jest.fn(() => {
     return "This is fake data";
   });
-  // Arrange
+  // Arrange: renders component
   render(
     <MissionForm
       isFetchingData={false}
       getData={() => fakeGetData("Fake Data")}
     />
   );
-  // Act
+  // Act: click button
   const button = screen.queryByRole("button");
-  fireEvent.click(button);
+  //use screen.getByRole when not explicity testing. 
+  // fireEvent.click(button);
+  userEvent.click(button);//will also work. But this will break the test because props.getData() doesn't exist before adding fakedata to the render function. 
 
   // Assert
   console.log(fakeGetData.mock);

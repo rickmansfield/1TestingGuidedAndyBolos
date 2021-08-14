@@ -54,12 +54,15 @@ test("calls getData when button is clicked", () => {
   const button = screen.queryByRole("button");
   //use screen.getByRole when not explicity testing. 
   // fireEvent.click(button);
-  userEvent.click(button);//will also work. But this will break the test because props.getData() doesn't exist before adding fakedata to the render function. 
-
+  userEvent.click(button);//will also work. Note, this will break the test because props.getData() doesn't exist before adding fakedata to the render function. 
+  userEvent.click(button);
+  userEvent.click(button);
+console.log(fakeGetData.mock);
   // Assert
   console.log(fakeGetData.mock);
-  expect(fakeGetData.mock.calls.length).toBe(1);
-
+  expect(fakeGetData.mock.calls.length).toBe(3);
+  expect(fakeGetData.mock.calls.length === 3).toBeTruthy();
   expect(fakeGetData).toHaveBeenCalled();
-  expect(fakeGetData).toHaveBeenCalledTimes(1);
+  expect(fakeGetData).toHaveBeenCalledTimes(3);
+  
 });

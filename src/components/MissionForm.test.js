@@ -11,7 +11,7 @@ test("MissionForm renders correctly without errors", () => {
 test("renders message correctly when isFetchingData is true", () => {
   // Arrange: render the component
   render(<MissionForm isFetchingData={true} />);
-  // Act: get loading message
+  // Act: get/find loading message and button
   const item = screen.queryByText(/we are fetching data/i);// query is better than "get" when using "expect"
   const button = screen.queryByRole("button");
   // Assert: does loading message exist on the screen
